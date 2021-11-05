@@ -1,19 +1,32 @@
 <?php
 
-require_once 'src/Conta.php';
+require_once 'autoload.php';
 
-$primeiraConta = new Conta(cpfTitular: '123.456.789-10', nomeTitular: 'Gean Lucas');
+use Alura\Banco\Modelo\Conta\Titular;
+use Alura\Banco\Modelo\Endereco;
+use Alura\Banco\Modelo\Cpf;
+use Alura\Banco\Modelo\Conta\Conta;
+
+
+$endereco = new Endereco(cidade: 'Rio de Janeiro', bairro: 'Santa Teresa', rua: 'Rua Ocidental', numero: '60');
+$gean = new Titular(new Cpf(cpf: '123.456.789-10'), nome: 'Gean Lucas', endereco: $endereco);
+$primeiraConta = new Conta($gean);
 $primeiraConta->depositar(valorADepositar: 500);
 $primeiraConta->sacar(valorASacar: 300);
 
 
-echo $primeiraConta->recuperarSaldo() . PHP_EOL;
-echo $primeiraConta->recuperarCpfTitular() . PHP_EOL;
-echo $primeiraConta->recuperarNomeTitular() . PHP_EOL;
+echo $primeiraConta->recuperaSaldo() . PHP_EOL;
+echo $primeiraConta->recuperaCpfTitular() . PHP_EOL;
+echo $primeiraConta->recuperaNomeTitular() . PHP_EOL;
 
-$segundaConta = new Conta(cpfTitular: '321.645.987-15', nomeTitular: 'Liziane');
-$terceiraConta = new Conta(cpfTitular: '321.645.987-15', nomeTitular: 'Maria Eduarda');
+$liziane = new Titular(new Cpf(cpf: '321.645.987-15'), nome: 'Liziane', endereco: $endereco);
+$segundaConta = new Conta($liziane);
+
+$outroEndereco = new Endereco(cidade: 'Tangua', bairro: 'centro', rua: '21', numero: '12');
+$maria = new Titular(new Cpf(cpf: '321.645.987-15'), nome: 'Maria Eduarda', endereco: $outroEndereco);
+$terceiraConta = new Conta($maria);
 
 unset($terceiraConta);
+var_dump($segundaConta);
 
 echo Conta::recuperaNumeroDeContas();
